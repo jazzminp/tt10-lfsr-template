@@ -6,7 +6,7 @@ SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
 PROJECT_SOURCES = lfsr.v         # Main LFSR Verilog file
-TESTBENCH_SOURCES = lfsr_test.v  # Testbench Verilog file
+TESTBENCH_SOURCES = tb.v  # Testbench Verilog file
 
 # Simulation build directory
 SIM_BUILD = sim_build
