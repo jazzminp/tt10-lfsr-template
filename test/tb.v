@@ -1,58 +1,55 @@
-/ Copyright 2007 Altera Corporation. All rights reserved.
-// Altera products are protected under numerous U.S. and foreign patents,
-// maskwork rights, copyrights and other intellectual property laws.
-//
-// This reference design file, and your use thereof, is subject to and governed
-// by the terms and conditions of the applicable Altera Reference Design
-// License Agreement (either as signed by you or found at www.altera.com). By
-// using this reference design file, you indicate your acceptance of such terms
-// and conditions between you and Altera Corporation. In the event that you do
-// not agree with such terms and conditions, you may not use the reference
-// design file and please promptly destroy any copies you have made.
-//
-// This reference design file is being provided on an "as-is" basis and as an
-// accommodation and therefore all warranties, representations or guarantees of
-// any kind (whether express, implied or statutory) including, without
-// limitation, warranties of merchantability, non-infringement, or fitness for
-// a particular purpose, are specifically disclaimed. By making this reference
-// design file available, Altera expressly does not recommend, suggest or
-// require that this reference design file be used in combination with any
-// other product not provided by Altera.
-/////////////////////////////////////////////////////////////////////////////
-module lfsr_test ();
-parameter WIDTH = 20;
-reg clk, rst, fail;
-integer cycles;
-wire [WIDTH-1:0] out;
-lfsr l (.clk(clk),.rst(rst),.out(out));
-defparam l .WIDTH = WIDTH;
-initial begin
-rst = 0;
-clk = 0;
-fail = 0;
-#10 rst = 1;
-#10 rst = 0;
-cycles = 0;
-end
-always @(posedge clk) begin
-cycles = cycles + 1;
-if (cycles == (1 << WIDTH)) begin
-if (out != 0) begin
-$display ("Failed to return to zero");
-end
-else begin
-if (!fail) $display ("PASS");
-end
-$stop();
-end
-end
-always @(negedge clk) begin
-if ((cycles != (1 << WIDTH)-1) && out == 0) begin
-$display ("Early return to zero");
-fail = 1;
-end
-end
-always begin
-#1000 clk = ~clk;
-end
+`default_nettype none 
+`timescale 1ns / 1ps
+
+/* This testbench instantiates the LFSR module and sets up the signals
+   for testing with cocotb (Python test scripts).
+*/
+
+module tb ();
+
+  // Dump the signals to a VCD file. You can view it with gtkwave or surfer.
+  initial begin
+    $dumpfile("tb.vcd");
+    $dumpvars(0, tb);
+    #1;
+  end
+
+  // Wire up the inputs and outputs:
+  reg clk;
+  reg rst;
+  wire [31:0] out;  // Adjust the width as needed for your LFSR module (e.g., 32-bit)
+
+  // Instantiate the LFSR module:
+  lfsr #(
+    .WIDTH(32)  // Set the LFSR width, change this as necessary for different sizes
+  ) uut (
+    .clk(clk),
+    .rst(rst),
+    .out(out)
+  );
+
+  // Generate clock signal
+  always begin
+    #10 clk = ~clk;  // 50 MHz clock (10ns period)
+  end
+
+  // Initial reset and test stimulus
+  initial begin
+    // Initialize signals
+    clk = 0;
+    rst = 0;
+    
+    // Reset the LFSR
+    #5 rst = 1;
+    #10 rst = 0;
+
+    // Wait for some clock cycles
+    #100;
+
+    // Add more testing here (e.g., checking output, monitoring behavior)
+
+    // End simulation
+    $stop();
+  end
+
 endmodule
