@@ -5,40 +5,23 @@
 SIM ?= icarus
 TOPLEVEL_LANG ?= verilog
 SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
+PROJECT_SOURCES = lfsr.v         # Main LFSR Verilog file
+TESTBENCH_SOURCES = lfsr_test.v  # Testbench Verilog file
 
-ifneq ($(GATES),yes)
+# Simulation build directory
+SIM_BUILD = sim_build
 
-# RTL simulation:
-SIM_BUILD				= sim_build/rtl
-VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
+# Include the necessary sources
+VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES)) $(addprefix $(SRC_DIR)/,$(TESTBENCH_SOURCES))
 
-else
+# Include Cocotb's make rules
+include $(shell cocotb-config --makefiles)/Makefile.sim
 
-# Gate level simulation:
-SIM_BUILD				= sim_build/gl
-COMPILE_ARGS    += -DGL_TEST
-COMPILE_ARGS    += -DFUNCTIONAL
-COMPILE_ARGS    += -DUSE_POWER_PINS
-COMPILE_ARGS    += -DSIM
-COMPILE_ARGS    += -DUNIT_DELAY=\#1
-VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v
-VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
+# The top-level testbench module to run in the simulator
+TOPLEVEL = lfsr_test
 
-# this gets copied in by the GDS action workflow
-VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
-
-endif
-
-# Allow sharing configuration between design and testbench via `include`:
-COMPILE_ARGS 		+= -I$(SRC_DIR)
-
-# Include the testbench sources:
-VERILOG_SOURCES += $(PWD)/tb.v
-TOPLEVEL = tb
-
-# MODULE is the basename of the Python test file
+# Module name for Cocotb Python tests
 MODULE = test
 
-# include cocotb's make rules to take care of the simulator setup
-include $(shell cocotb-config --makefiles)/Makefile.sim
+# Include source directory for compiling Verilog files
+COMPILE_ARGS += -I$(SRC_DIR)
