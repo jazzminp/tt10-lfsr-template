@@ -1,9 +1,9 @@
 # Tiny Tapeout project information
 project:
-  title:        ""      # Project title
-  author:       ""      # Your name
+  title:        ""      # lfsr
+  author:       ""      # Jazzmin Poitier
   discord:      ""      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
-  description:  ""      # One line description of what your project does
+  description:  ""      # This project implements a Linear Feedback Shift Register (LFSR) module with customizable width for generating pseudo-random bit sequences.
   language:     "Verilog" # other examples include SystemVerilog, Amaranth, VHDL, etc
   clock_hz:     0       # Clock frequency in Hz (or 0 if not applicable)
 
@@ -11,36 +11,54 @@ project:
   tiles: "1x1"          # Valid values: 1x1, 1x2, 2x2, 3x2, 4x2, 6x2 or 8x2
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
-  top_module:  "tt_um_example"
+  top_module:  "tt_um_jazzmin_lfsr"
 
   # List your project's source files here.
   # Source files must be in ./src and you must list each source file separately, one per line.
   # Don't forget to also update `PROJECT_SOURCES` in test/Makefile.
   source_files:
-    - "project.v"
+    - "lfsr.v"
 
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 # This section is for the datasheet/website. Use descriptive names (e.g., RX, TX, MOSI, SCL, SEG_A, etc.).
 pinout:
-  # Inputs
-  ui[0]: ""
-  ui[1]: ""
-  ui[2]: ""
-  ui[3]: ""
-  ui[4]: ""
-  ui[5]: ""
-  ui[6]: ""
-  ui[7]: ""
+   # Inputs
+  clk: "Clock Input"
+  rst: "Reset Input"
 
   # Outputs
-  uo[0]: ""
-  uo[1]: ""
-  uo[2]: ""
-  uo[3]: ""
-  uo[4]: ""
-  uo[5]: ""
-  uo[6]: ""
-  uo[7]: ""
+  out[0]: "LFSR Output Bit 0"
+  out[1]: "LFSR Output Bit 1"
+  out[2]: "LFSR Output Bit 2"
+  out[3]: "LFSR Output Bit 3"
+  out[4]: "LFSR Output Bit 4"
+  out[5]: "LFSR Output Bit 5"
+  out[6]: "LFSR Output Bit 6"
+  out[7]: "LFSR Output Bit 7"
+  out[8]: "LFSR Output Bit 8"
+  out[9]: "LFSR Output Bit 9"
+  out[10]: "LFSR Output Bit 10"
+  out[11]: "LFSR Output Bit 11"
+  out[12]: "LFSR Output Bit 12"
+  out[13]: "LFSR Output Bit 13"
+  out[14]: "LFSR Output Bit 14"
+  out[15]: "LFSR Output Bit 15"
+  out[16]: "LFSR Output Bit 16"
+  out[17]: "LFSR Output Bit 17"
+  out[18]: "LFSR Output Bit 18"
+  out[19]: "LFSR Output Bit 19"
+  out[20]: "LFSR Output Bit 20"
+  out[21]: "LFSR Output Bit 21"
+  out[22]: "LFSR Output Bit 22"
+  out[23]: "LFSR Output Bit 23"
+  out[24]: "LFSR Output Bit 24"
+  out[25]: "LFSR Output Bit 25"
+  out[26]: "LFSR Output Bit 26"
+  out[27]: "LFSR Output Bit 27"
+  out[28]: "LFSR Output Bit 28"
+  out[29]: "LFSR Output Bit 29"
+  out[30]: "LFSR Output Bit 30"
+  out[31]: "LFSR Output Bit 31"
 
   # Bidirectional pins
   uio[0]: ""
