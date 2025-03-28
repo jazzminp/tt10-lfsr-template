@@ -2,7 +2,8 @@
 `timescale 1ns / 1ps
 
 /* This testbench instantiates the LFSR module and sets up the signals
-   for testing with cocotb (Python test scripts).
+   for testing with cocotb (Python test scripts). It also includes
+   the gate-level test options for power and ground signals.
 */
 
 module tb ();
@@ -19,10 +20,14 @@ module tb ();
   reg rst;
   wire [31:0] out;  // Adjust the width as needed for your LFSR module (e.g., 32-bit)
 
-  // Instantiate the LFSR module:
-  lfsr #(
-    .WIDTH(32)  // Set the LFSR width, change this as necessary for different sizes
-  ) uut (
+`ifdef GL_TEST
+  // Gate-level test: Define power and ground signals
+  wire VPWR = 1'b1;
+  wire VGND = 1'b0;
+`endif
+
+  // Replace tt_um_factory_test with your module name:
+  lfsr user_project (  // Instantiate your module name here (lfsr)
     .clk(clk),
     .rst(rst),
     .out(out)
